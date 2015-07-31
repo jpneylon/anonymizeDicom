@@ -130,6 +130,20 @@ DICOMRT_Set::open_dicom_directory()
             {
                 rtstruct->loadRTStructInfo();
                 rtstruct_open = true;
+                rtstruct->saveRTStructData( outputdir, true );
+
+                char *temp_text = new char[text_length];
+                sprintf( temp_text, "%s", dicomText);
+
+                delete [] dicomText;
+                text_length += strlen( rtstruct->getDicomFilename() ) + 12;
+                dicomText = new char[ text_length ];
+                sprintf( dicomText, "%s", temp_text );
+                delete [] temp_text;
+                strcat( dicomText, "   struct: ");
+                strcat( dicomText, rtstruct->getDicomFilename() );
+                strcat( dicomText, "\n" );
+                dicomLabel->set_text( dicomText );
             }
             else printf("\n Moving on from RTSTRUCT...\n");
 
@@ -139,6 +153,20 @@ DICOMRT_Set::open_dicom_directory()
             {
                 rtplan->loadRTPlanData();
                 rtplan_open = true;
+                rtplan->saveRTPlanData( outputdir, true );
+
+                char *temp_text = new char[text_length];
+                sprintf( temp_text, "%s", dicomText);
+
+                delete [] dicomText;
+                text_length += strlen( rtplan->getDicomFilename() ) + 12;
+                dicomText = new char[ text_length ];
+                sprintf( dicomText, "%s", temp_text );
+                delete [] temp_text;
+                strcat( dicomText, "   plan: ");
+                strcat( dicomText, rtplan->getDicomFilename() );
+                strcat( dicomText, "\n" );
+                dicomLabel->set_text( dicomText );
             }
             else printf("\n Moving on from RTPLAN...\n");
 
@@ -161,6 +189,7 @@ DICOMRT_Set::open_dicom_directory()
                 strcat( dicomText, "   dose: ");
                 strcat( dicomText, rtdose->getDicomFilename() );
                 strcat( dicomText, "\n" );
+                dicomLabel->set_text( dicomText );
             }
             else printf("\n Moving on from RTDOSE...\n");
 
